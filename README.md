@@ -1,0 +1,2 @@
+# Simple Signin
+A simple web component that takes username/email and password, and check it against hash, on the client side. This is meant for basic site/proof of concep, NOT FOR LARGE SCALE APP OR MEDIUM FOR THAT MATTER.
