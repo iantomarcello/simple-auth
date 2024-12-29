@@ -9,9 +9,15 @@
     <script type="module" src="/src/simple-auth.ts"></script>
   </head>
   <body>
-    <simple-auth>
+    <simple-auth id="sa">
       <img src="vite.svg" alt="">
       <p>Simple Auth!</p>
     </simple-auth>
+    <script>
+      sa.addEventListener('auth-error', () => console.log('ERROR'))
+      sa.addEventListener('auth-success', () => console.log('hi'))
+      // Set the hash via attribute or programmatically. Only the first set works.
+      sa.hash = 'somehash';
+    </script>
   </body>
 </html>
