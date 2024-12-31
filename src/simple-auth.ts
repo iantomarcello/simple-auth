@@ -1,7 +1,7 @@
 import { LitElement, PropertyValues, css, html } from 'lit'
-import { customElement, eventOptions, property, query, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 
-// TODO: store hash somewhere secure
+// TODO: alternative attribute to get hash from somewhere secure like env instead of passing via attribute.
 
 /**
  * Simple small app auth for showcase or proof of concept. NOT FOR ACTUAL APPLICATIONS.
@@ -10,8 +10,10 @@ import { customElement, eventOptions, property, query, state } from 'lit/decorat
  */
 @customElement('simple-auth')
 export class SimpleAuth extends LitElement {
+  @property({ type: Boolean, attribute: 'no-auto' }) noAutoSwap: boolean = false;
   @property() hash: any;
   #hash!: string;
+  @state() isAuthenticated: boolean = false;
   @state() isLoading: boolean = false;
   @state() statusMessage: string | null = null;
   @query('#username') username!: HTMLInputElement;
@@ -24,13 +26,14 @@ export class SimpleAuth extends LitElement {
       display: block;
       container-type: inline-size;
       color-scheme: light dark;
+      margin: 1.5rem;
     }
 
     .container {
       padding: 1.5rem;
       background-color: light-dark(hsl(0 0% 99%), hsl(0 0% 22%));
       border-radius: 0.5rem;
-      box-shadow: 0 1px 3px light-dark(hsla(0 0% 40% / 0.25), hsla(0 00% 80% / 0.15));
+      box-shadow: 0 1px 4px light-dark(hsla(0 0% 40% / 0.55), hsla(0 00% 80% / 0.15));
     }
 
     .wrapper {
@@ -70,8 +73,8 @@ export class SimpleAuth extends LitElement {
       padding: 0.75rem 1.25rem;
       border-radius: 0.5rem;
       border: 0px;
-      color: light-dark(hsl(0 0% 92%), hsl(0 0% 72%));
-      background-color: light-dark(hsl(235 100% 70%), hsl(235deg 47.77% 30.47%));
+      color: light-dark(hsl(0 0% 92%), hsl(0deg 0% 95%));
+      background-color: light-dark(hsl(234.9deg 58% 52.85%), hsl(235.11deg 65.22% 40.59%));
       box-shadow: 0 2px 3px light-dark(hsl(235deg 100% 19% / 45%), hsl(235deg 25.75% 12.64% / 45%));
       cursor: pointer;
     }
@@ -86,11 +89,11 @@ export class SimpleAuth extends LitElement {
 
   `
   render() {
-    return html`
+    const ui = html`
       <div class="container">
         <div class="wrapper">
           <div class="content">
-            <slot></slot>
+            <slot name="header"></slot>
           </div>
           <form @submit=${this.handleSubmit}>
             <fieldset .disabled=${!this.hash?.length}>
@@ -110,7 +113,18 @@ export class SimpleAuth extends LitElement {
           </form>
         </div>
       </div>
-    `
+      `
+    ;
+
+    if (this.noAutoSwap) {
+      return ui;
+    }
+
+    if (!this.isAuthenticated) {
+      return ui;
+    }
+
+    return html`<slot></slot>`;
   }
 
   private async digest(cred: string) {
@@ -151,6 +165,7 @@ export class SimpleAuth extends LitElement {
 
     this.isLoading = false;
     this.statusMessage = 'Authenticated.';
+    this.isAuthenticated = true;
     this.dispatchEvent(new CustomEvent('auth-success'));
   }
 
