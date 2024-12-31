@@ -11,7 +11,7 @@ import { customElement, property, query, state } from 'lit/decorators.js'
 @customElement('simple-auth')
 export class SimpleAuth extends LitElement {
   @property({ type: Boolean, attribute: 'no-collapse' }) noAutoCollapse: boolean = false;
-  @property() hash: any;
+  @property() hash!: string;
   #hash!: string;
   @state() isAuthenticated: boolean = false;
   @state() isLoading: boolean = false;
@@ -96,7 +96,7 @@ export class SimpleAuth extends LitElement {
             <slot name="header"></slot>
           </div>
           <form @submit=${this.handleSubmit}>
-            <fieldset .disabled=${!this.hash?.length}>
+            <fieldset ?disabled=${this.#hash?.length < 1}>
               <div class="form-field">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" required >
@@ -173,12 +173,13 @@ export class SimpleAuth extends LitElement {
     if (_changedProperties.has('hash')) {
       if (!this.#hash) {
         this.#hash = this.hash;
+        this.requestUpdate();
       }
     }
   }
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    if (!this.hash?.length) {
+  protected firstUpdated(): void {
+    if (this.#hash?.length < 1) {
       this.statusMessage = 'Missing hash.';
     }
   }
