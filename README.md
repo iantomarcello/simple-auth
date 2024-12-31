@@ -64,20 +64,26 @@ A simple web component that takes username/email and password, and check it agai
           This is less secure but more programmatically handled (e.g. via `document.createElement('my-app')`).
 
 # Attributes
-### no-collapse
-Tells the form to not disappear after authenticated. May be using with `auth-success` event to handle things programmatically.
+### **no-collapse**: boolean
+Boolean where set tells the form to not disappear after authenticated. May be using with `auth-success` event to handle things programmatically.
+### **username-label**: string
+Optional. Sets the label for username field.
+### **password-label**: string
+Optional. Sets the label for password field.
+### **submit-label**: string
+Optional. Sets the label for submit button.
 
 # Properties
-### hash: string
+### **hash**: string
 The hash for the `username` and `password` to be checked against. Can only be set once, subsequent changes will not take effect.
 
 # Methods
-### digest(cred: string): string
+### **digest(cred: string)**: string
 Hashes `cred` into the `hash` property to be used.
 
 # Events
-### auth-error
+### **auth-error**
 Fires when authentication failed. Can be listened to display custom error dialogs.
 
-### auth-success
+### **auth-success**
 Fires when authentication succeed. Can be listened to display authenticated content.

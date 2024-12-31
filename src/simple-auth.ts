@@ -12,6 +12,9 @@ import { customElement, property, query, state } from 'lit/decorators.js'
 export class SimpleAuth extends LitElement {
   @property({ type: Boolean, attribute: 'no-collapse' }) noAutoCollapse: boolean = false;
   @property() hash!: string;
+  @property({ attribute: 'username-label' }) usernameLabel: string = 'Username';
+  @property({ attribute: 'password-label' }) passwordLabel: string = 'Password';
+  @property({ attribute: 'submit-label' }) submitLabel: string = 'Sign In!';
   #hash!: string;
   @state() isAuthenticated: boolean = false;
   @state() isLoading: boolean = false;
@@ -103,15 +106,15 @@ export class SimpleAuth extends LitElement {
           <form @submit=${this.handleSubmit}>
             <fieldset ?disabled=${this.#hash?.length < 1}>
               <div class="form-field">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" required >
+                <label for="username">${this.usernameLabel}</label>
+                <input type="text" name="username" id="username" required>
               </div>
               <div class="form-field">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required >
+                <label for="password">${this.passwordLabel}</label>
+                <input type="password" name="password" id="password" required>
               </div>
               <button type="submit" .disabled=${this.isLoading} >
-                ${ this.isLoading ? 'Loading...' : 'Sign In!'}
+                ${this.isLoading ? 'Loading...' : this.submitLabel}
               </button>
             </fieldset>
             <small class="status-message">${this.statusMessage}</small>
