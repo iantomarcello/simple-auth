@@ -10,7 +10,7 @@ import { customElement, property, query, state } from 'lit/decorators.js'
  */
 @customElement('simple-auth')
 export class SimpleAuth extends LitElement {
-  @property({ type: Boolean, attribute: 'no-auto' }) noAutoSwap: boolean = false;
+  @property({ type: Boolean, attribute: 'no-collapse' }) noAutoCollapse: boolean = false;
   @property() hash: any;
   #hash!: string;
   @state() isAuthenticated: boolean = false;
@@ -116,7 +116,7 @@ export class SimpleAuth extends LitElement {
       `
     ;
 
-    if (this.noAutoSwap) {
+    if (this.noAutoCollapse) {
       return ui;
     }
 
