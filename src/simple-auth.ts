@@ -22,18 +22,23 @@ export class SimpleAuth extends LitElement {
 
   static styles = css`
     :host {
-      width: 320px;
-      display: block;
-      container-type: inline-size;
-      color-scheme: light dark;
-      margin: 1.5rem;
+      display: flex;
+      width: 100%;
+      min-height: 100dvh;
+      justify-content: center;
+      align-items: center;
     }
 
     .container {
+      width: 320px;
       padding: 1.5rem;
+      margin-inline: 1.5rem;
       background-color: light-dark(hsl(0 0% 99%), hsl(0 0% 22%));
       border-radius: 0.5rem;
       box-shadow: 0 1px 4px light-dark(hsla(0 0% 40% / 0.55), hsla(0 00% 80% / 0.15));
+      container-type: inline-size;
+      color-scheme: light dark;
+      box-sizing: border-box;
     }
 
     .wrapper {
@@ -42,7 +47,7 @@ export class SimpleAuth extends LitElement {
     }
 
     .content:empty {
-      display: none
+      display: none;
     }
 
     form {
@@ -150,7 +155,7 @@ export class SimpleAuth extends LitElement {
     let hash;
     try {
       hash = await this.digest(cred);
-    } catch (error) {
+    } catch {
       this.isLoading = false;
       this.dispatchEvent(new CustomEvent('auth-error'));
       return;
